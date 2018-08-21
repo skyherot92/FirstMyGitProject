@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<context:component-scan base-package="org.lanmei"><!-- base-package 如果多个，用“,”分隔 -->
+		<!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> --><!-- 过滤其中这四个注解中的一个 -->
+	</context:component-scan>
+	<!-- 
+	  Spring 整合quartz步骤
+	  1.定义工作任务Job,用户编写，需继承org.quartz.Job类
+	  2.定义触发器，并将触发器与工作任务绑定
+	  3.定义调度器，并将触发器注册到调度器中
+	  -->
+    <!-- 数据库备份，使用单例 -->
+    <bean id="databaseBackup" class="org.lanmei.backup.DatabaseBackup" scope="singleton"/>
+    <!-- 执行的任务　注入databaseBackup -->
+    <bean id="myJob" class="org.lanmei.backup.MysqlBackup"></bean>
+    <!-- 配置JobDetail -->
+    <!-- 任务类可以不实现Job接口 -->
+    <bean id="springQtzJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 执行目标job -->
+        <property name="targetObject" ref="myJob"></property>
+
+        <!-- 要执行的方法 -->
+        <property name="targetMethod" value="execute"></property>
+    </bean>
+
+    <!-- 配置tirgger触发器 -->
+    <bean id="cronTriggerFactoryBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!-- jobDetail -->
+        <property name="jobDetail" ref="springQtzJobMethod"></property>
+
+        <!-- cron表达式，执行时间  每5秒执行一次 -->
+        <!-- 
+        秒　0-　59，　分　0-59，　时　0-23　，天　0-31，月份　1-12　，星期　1-7，年　1970-2099
+        *:每一分钟
+        ？：占位符　日期和星期能用
+        －：范围　0-2
+        逗号：列表值　　1，２，3
+        
+         -->
+        <property name="cronExpression" value="0 0 0 * * ?"></property>
+    </bean>
+
+    <!-- 配置调度工厂 -->
+    <bean id="SchedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTriggerFactoryBean"></ref>
+            </list>
+        </property>
+
+    </bean>
+	
+</beans>

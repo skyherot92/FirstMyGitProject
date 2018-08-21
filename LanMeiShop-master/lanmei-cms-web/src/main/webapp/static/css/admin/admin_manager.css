@@ -1,0 +1,9 @@
+
+
+.btnTitle{
+	display:inline-block;
+	height:40px;
+}
+.btnTitle > button{
+	background-color:#40E0D0;
+}

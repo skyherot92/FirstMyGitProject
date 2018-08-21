@@ -1,0 +1,112 @@
+/**
+*********************商品查询模块***************************************
+*/
+/**
+* 表格类
+*/
+.table-list{
+	font-size:15px;
+	width:100%;
+	height:auto;
+	border-collapse:collapse;
+	border:1px solid black;
+	text-align:center;
+}
+/**
+*设置th边框
+*/
+.table-list th {
+	border:1px solid black;
+}
+/**
+*设置td边框
+*/
+.table-list td {
+	border:1px solid black;
+}
+/**
+*表头
+*/
+.table-list .table-thead{
+	background-color:#C1CDC1;
+}
+/**
+*商品列表显示默认状态为隐藏
+*/
+#commodityListModel{
+	display:none;
+}
+/**
+*翻页按钮
+*/
+.page-item-div{
+	margin:center;
+}
+.page-item-div ul{
+	list-style-type:none;
+}
+
+/**
+*********************sku模块***************************************
+*/
+.sku-attr-list{
+	width:150px;
+	float:left;
+	color:blue;
+}
+.sku-attr-list button{
+	position:absolute;
+	right:0;
+	color:red;
+}
+
+.navigbreadcrumb-item{
+	color:#8B7E66;
+	list-style-type:none;
+	display:inline;
+}
+
+.navigbreadcrumb-item:after{
+	content:"＞";
+	color:#0A0A0A;
+}
+
+.categoryItemSelect{
+	width:350px;
+	height:auto;
+}
+.categoryItemSelect td{
+	text-align:center;
+}
+.categoryItemSelect li{
+	color:#43CD80;
+	list-style-type:none;
+	display:inline;
+}
+
+.dynamicItemTd{
+	font-size:10px;
+	color:red;
+}
+#commodityList{
+	text-align:center;
+}
+
+.button {
+	border: none;
+    color: black;
+    background-color:#FFEFD5;
+    font-family:Arial;
+    
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px 2px;
+    cursor: pointer;
+    height:23;
+}
+.name{
+	float:left;
+	color:#8B8878;
+}
